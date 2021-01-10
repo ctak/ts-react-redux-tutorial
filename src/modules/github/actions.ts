@@ -1,3 +1,4 @@
+import { createAsyncAction } from 'typesafe-actions';
 import { GithubProfile } from '../../api/github';
 import { AxiosError } from 'axios';
 
@@ -10,15 +11,22 @@ export const GET_USER_PROFILE_ERROR = 'github/GET_USER_PROFILE_ERROR';
 
 let nextId = 1;  // 새로운 항목을 추가할 때 사용할 고유 ID 값
 
-// 액션 생성함수를 선언합니다.
-export const getUserProfile = () => (<const>{
-  type: GET_USER_PROFILE
-});
-export const getUserProfileSuccess = (githubProfile: GithubProfile) => (<const>{
-  type: GET_USER_PROFILE_SUCCESS,
-  payload: githubProfile,
-});
-export const getUserProfileError = (axiosError: AxiosError) => (<const>{
-  type: GET_USER_PROFILE_ERROR,
-  payload: axiosError,
-});
+// // 액션 생성함수를 선언합니다.
+// export const getUserProfile = () => (<const>{
+//   type: GET_USER_PROFILE
+// });
+// export const getUserProfileSuccess = (githubProfile: GithubProfile) => (<const>{
+//   type: GET_USER_PROFILE_SUCCESS,
+//   payload: githubProfile,
+// });
+// export const getUserProfileError = (axiosError: AxiosError) => (<const>{
+//   type: GET_USER_PROFILE_ERROR,
+//   payload: axiosError,
+// });
+
+// createStandardAction 은 문제가 발생하지만, 이것이 잘 된다면 대박인데!
+export const getUserProfileAsync = createAsyncAction(
+  GET_USER_PROFILE,
+  GET_USER_PROFILE_SUCCESS,
+  GET_USER_PROFILE_ERROR
+)<undefined, GithubProfile, AxiosError>();
